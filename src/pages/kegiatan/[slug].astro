@@ -1,0 +1,173 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { getAlbumPhotos, formatTanggalIndonesia } from '../../utils/kegiatan';
+import { siteConfig } from '../../data/site';
+
+export async function getStaticPaths() {
+  const albums = await getCollection('kegiatan');
+  return albums.map((album) => ({
+    params: { slug: album.id },
+    props: { album },
+  }));
+}
+
+const { album } = Astro.props;
+const { title, date, category, description, cover } = album.data;
+const { Content } = await render(album);
+
+// Ambil seluruh foto yang ada di dalam folder album ini secara dinamis
+const photos = getAlbumPhotos(album.id);
+
+// Data JSON untuk Lightbox lokal pada halaman album
+const albumLightboxData = photos.map((p) => ({
+  src: p.image.src,
+  title: `${title} — ${p.filename}`,
+  date: formatTanggalIndonesia(date),
+  category: category,
+  albumUrl: '',
+}));
+---
+
+<BaseLayout
+  title={`${title} — Galeri Kegiatan ${siteConfig.personal.name}`}
+  description={description}
+>
+  <article class="py-12 sm:py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Tombol Kembali -->
+    <div class="mb-8">
+      <a
+        href="/kegiatan"
+        class="inline-flex items-center gap-2 text-xs font-sans tracking-wider uppercase font-semibold text-brand-primary hover:text-brand-accent transition-colors"
+      >
+        <Icon name="arrow-left" class="w-4 h-4" />
+        <span>Kembali ke Seluruh Galeri Kegiatan</span>
+      </a>
+    </div>
+
+    <!-- Header Album -->
+    <header class="space-y-4 pb-8 border-b border-brand-border">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="px-3 py-1 rounded-full text-xs font-sans font-semibold tracking-wider uppercase bg-brand-primary text-brand-bg">
+          {category}
+        </span>
+        <span class="text-xs font-sans font-medium text-brand-muted tracking-wider">
+          {formatTanggalIndonesia(date)}
+        </span>
+        <span class="text-xs font-sans font-medium text-brand-muted">•</span>
+        <span class="text-xs font-sans font-medium text-brand-muted">
+          {photos.length} Foto dalam Album Ini
+        </span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-brand-primary leading-tight">
+        {title}
+      </h1>
+
+      <p class="text-base sm:text-lg text-brand-text/90 font-sans leading-relaxed">
+        {description}
+      </p>
+    </header>
+
+    <!-- Cover Utama Album -->
+    <div class="my-10 rounded-2xl overflow-hidden border border-brand-border shadow-xl bg-brand-surface aspect-[16/9] relative">
+      <Image
+        src={cover}
+        alt={`Cover album ${title}`}
+        width={1200}
+        height={675}
+        quality={90}
+        class="w-full h-full object-cover"
+        loading="eager"
+      />
+    </div>
+
+    <!-- Narasi / Cerita Pengalaman (Markdown) -->
+    <div class="prose prose-lg max-w-none font-sans text-brand-text leading-relaxed my-10
+      prose-headings:font-serif prose-headings:text-brand-primary prose-headings:font-medium
+      prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:mb-4
+      prose-p:text-brand-text/90 prose-p:leading-relaxed
+    ">
+      <Content />
+    </div>
+
+    <!-- Galeri Seluruh Foto di Album Ini -->
+    <div class="pt-8 border-t border-brand-border">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <span class="text-xs font-sans tracking-[0.2em] uppercase font-semibold text-brand-muted block">
+            Dokumentasi Lengkap
+          </span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-medium text-brand-primary">
+            Foto-Foto Kegiatan ({photos.length})
+          </h2>
+        </div>
+        <span class="text-xs text-brand-muted hidden sm:inline-block">
+          Klik foto untuk memperbesar
+        </span>
+      </div>
+
+      <!-- Grid Foto Album -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        {photos.map((photo, index) => (
+          <div
+            class="group relative rounded-xl overflow-hidden bg-brand-surface border border-brand-border shadow-sm cursor-pointer aspect-[4/3]"
+            data-lightbox-index={index}
+          >
+            <Image
+              src={photo.image}
+              alt={`${title} - Foto ${index + 1}`}
+              width={600}
+              height={450}
+              quality={85}
+              class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-108"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-brand-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <span class="p-2.5 rounded-full bg-brand-bg text-brand-primary shadow-md transform scale-90 group-hover:scale-100 transition-transform">
+                <Icon name="arrow-up-right" class="w-4 h-4" />
+              </span>
+            </div>
+            {photo.isCover && (
+              <div class="absolute top-2.5 left-2.5">
+                <span class="px-2 py-0.5 rounded text-[10px] font-sans font-semibold tracking-wider uppercase bg-brand-primary text-brand-bg shadow-sm">
+                  Cover Album
+                </span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Footer Navigasi -->
+    <div class="mt-16 pt-8 border-t border-brand-border flex items-center justify-between">
+      <a
+        href="/kegiatan"
+        class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-brand-primary hover:text-brand-accent transition-colors"
+      >
+        <Icon name="arrow-left" class="w-4 h-4" />
+        <span>Kembali ke Galeri</span>
+      </a>
+
+      <a
+        href="/#kontak"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-surface border border-brand-border text-brand-primary text-xs font-semibold tracking-wider uppercase hover:bg-brand-primary hover:text-brand-bg transition-colors"
+      >
+        <span>Ajak Kolaborasi Kegiatan</span>
+      </a>
+    </div>
+
+  </article>
+</BaseLayout>
+
+<script define:vars={{ albumLightboxData }}>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof (window as any).registerLightboxGallery === 'function') {
+      (window as any).registerLightboxGallery(albumLightboxData);
+    }
+  });
+</script>

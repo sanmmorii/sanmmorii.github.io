@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-bg: #FFF9F2;
+  --color-brand-surface: #F3E6D5;
+  --color-brand-surface-light: #FAF2E8;
+  --color-brand-primary: #800020;
+  --color-brand-primary-dark: #630018;
+  --color-brand-accent: #D45060;
+  --color-brand-accent-light: #F7D8DC;
+  --color-brand-text: #2B0810;
+  --color-brand-muted: #6B4049;
+  --color-brand-border: #E8D5C2;
+  --color-brand-border-dark: #C9B29B;
+
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', Inter, system-ui, -apple-system, sans-serif;
+  --font-script: 'Caveat', cursive;
+}
+
+:root {
+  --bg-main: #FFF9F2;
+  --surface-main: #F3E6D5;
+  --primary: #800020;
+  --accent: #D45060;
+  --text-main: #2B0810;
+  --text-muted: #6B4049;
+}
+
+html {
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-text);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Base Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--color-brand-primary);
+  letter-spacing: -0.015em;
+}
+
+/* Focus state visible for accessibility WCAG AA */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-brand-accent);
+  outline-offset: 3px;
+}
+
+/* Arch frame classes */
+.frame-arch {
+  border-top-left-radius: 200px;
+  border-top-right-radius: 200px;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  overflow: hidden;
+}
+
+.frame-arch-vase {
+  border-top-left-radius: 140px;
+  border-top-right-radius: 140px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  overflow: hidden;
+}
+
+/* Badge rotate animation */
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 24s linear infinite;
+}
+
+/* Subtle reveal on scroll */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

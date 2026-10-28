@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Icon from '../../components/Icon.astro';
+import { getCollection } from 'astro:content';
+import { siteConfig } from '../../data/site';
+
+const allProjects = await getCollection('projects');
+
+// Ambil semua daftar teknologi unik untuk opsi filter
+const allTechs = Array.from(
+  new Set(allProjects.flatMap((p) => p.data.tech))
+).sort();
+
+// Ambil semua tahun unik
+const allYears = Array.from(
+  new Set(allProjects.map((p) => String(p.data.year)))
+).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout
+  title={`Semua Proyek & Portofolio — ${siteConfig.personal.name}`}
+  description="Daftar lengkap proyek aplikasi web, sistem mobile, dan eksplorasi desain yang telah dikerjakan."
+>
+  <div class="py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header Halaman -->
+    <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+      <div class="flex items-center justify-center gap-2">
+        <div class="h-[1px] w-8 bg-brand-accent/40"></div>
+        <span class="text-xs font-sans tracking-[0.25em] font-semibold uppercase text-brand-accent">
+          Karya & Eksplorasi
+        </span>
+        <div class="h-[1px] w-8 bg-brand-accent/40"></div>
+      </div>
+
+      <h1 class="font-serif text-4xl sm:text-6xl font-medium tracking-tight text-brand-primary uppercase">
+        Daftar Seluruh Proyek
+      </h1>
+      <p class="text-sm sm:text-base text-brand-muted font-sans leading-relaxed">
+        Kumpulan proyek rekayasa perangkat lunak, aplikasi seluler, dan perancangan antarmuka yang dikembangkan selama masa perkuliahan dan magang.
+      </p>
+    </div>
+
+    <!-- Filter Bar (Teknologi & Tahun) -->
+    <div class="mb-10 p-6 rounded-2xl bg-brand-surface border border-brand-border space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <!-- Filter Kategori / Teknologi -->
+        <div class="space-y-2">
+          <span class="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted block">
+            Filter Teknologi:
+          </span>
+          <div class="flex flex-wrap gap-1.5" id="tech-filters">
+            <button
+              type="button"
+              class="tech-btn px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-primary text-brand-bg transition-all"
+              data-tech="all"
+            >
+              Semua ({allProjects.length})
+            </button>
+            {allTechs.map((tech) => (
+              <button
+                type="button"
+                class="tech-btn px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-bg border border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-primary transition-all"
+                data-tech={tech}
+              >
+                {tech}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Filter Tahun -->
+        <div class="space-y-2 md:text-right">
+          <span class="text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-muted block">
+            Tahun Pengerjaan:
+          </span>
+          <div class="flex flex-wrap md:justify-end gap-1.5" id="year-filters">
+            <button
+              type="button"
+              class="year-btn px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-primary text-brand-bg transition-all"
+              data-year="all"
+            >
+              Semua Tahun
+            </button>
+            {allYears.map((year) => (
+              <button
+                type="button"
+                class="year-btn px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-bg border border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-primary transition-all"
+                data-year={year}
+              >
+                {year}
+              </button>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Grid Proyek -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+      {allProjects.map((project) => (
+        <div
+          class="project-item transition-all duration-300"
+          data-tech={project.data.tech.join(',')}
+          data-year={String(project.data.year)}
+        >
+          <ProjectCard project={project} />
+        </div>
+      ))}
+    </div>
+
+    <!-- Pesan Kosong Jika Tidak Ada Hasil Filter -->
+    <div id="no-projects-msg" class="hidden text-center py-16">
+      <p class="font-serif text-2xl text-brand-muted">
+        Tidak ada proyek yang sesuai dengan filter yang dipilih.
+      </p>
+      <button
+        id="reset-filter-btn"
+        type="button"
+        class="mt-4 px-6 py-2.5 rounded-full bg-brand-primary text-brand-bg text-xs font-semibold tracking-wider uppercase"
+      >
+        Reset Filter
+      </button>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="mt-16 text-center">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-xs font-sans tracking-widest font-semibold uppercase text-brand-primary hover:text-brand-accent transition-colors"
+      >
+        <Icon name="arrow-left" class="w-4 h-4" />
+        <span>Kembali ke Halaman Beranda</span>
+      </a>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script>
+  let activeTech = 'all';
+  let activeYear = 'all';
+
+  const techButtons = document.querySelectorAll<HTMLButtonElement>('.tech-btn');
+  const yearButtons = document.querySelectorAll<HTMLButtonElement>('.year-btn');
+  const projectItems = document.querySelectorAll<HTMLElement>('.project-item');
+  const noProjectsMsg = document.getElementById('no-projects-msg');
+  const resetBtn = document.getElementById('reset-filter-btn');
+
+  function applyFilters() {
+    let visibleCount = 0;
+
+    projectItems.forEach((item) => {
+      const itemTechs = (item.dataset.tech || '').split(',');
+      const itemYear = item.dataset.year || '';
+
+      const matchTech = activeTech === 'all' || itemTechs.includes(activeTech);
+      const matchYear = activeYear === 'all' || itemYear === activeYear;
+
+      if (matchTech && matchYear) {
+        item.style.display = '';
+        visibleCount++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    if (noProjectsMsg) {
+      if (visibleCount === 0) {
+        noProjectsMsg.classList.remove('hidden');
+      } else {
+        noProjectsMsg.classList.add('hidden');
+      }
+    }
+  }
+
+  techButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      activeTech = btn.dataset.tech || 'all';
+      techButtons.forEach((b) => {
+        b.classList.remove('bg-brand-primary', 'text-brand-bg');
+        b.classList.add('bg-brand-bg', 'text-brand-text');
+      });
+      btn.classList.remove('bg-brand-bg', 'text-brand-text');
+      btn.classList.add('bg-brand-primary', 'text-brand-bg');
+      applyFilters();
+    });
+  });
+
+  yearButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      activeYear = btn.dataset.year || 'all';
+      yearButtons.forEach((b) => {
+        b.classList.remove('bg-brand-primary', 'text-brand-bg');
+        b.classList.add('bg-brand-bg', 'text-brand-text');
+      });
+      btn.classList.remove('bg-brand-bg', 'text-brand-text');
+      btn.classList.add('bg-brand-primary', 'text-brand-bg');
+      applyFilters();
+    });
+  });
+
+  resetBtn?.addEventListener('click', () => {
+    activeTech = 'all';
+    activeYear = 'all';
+    techButtons.forEach((b) => {
+      if (b.dataset.tech === 'all') {
+        b.classList.add('bg-brand-primary', 'text-brand-bg');
+        b.classList.remove('bg-brand-bg', 'text-brand-text');
+      } else {
+        b.classList.remove('bg-brand-primary', 'text-brand-bg');
+        b.classList.add('bg-brand-bg', 'text-brand-text');
+      }
+    });
+    yearButtons.forEach((b) => {
+      if (b.dataset.year === 'all') {
+        b.classList.add('bg-brand-primary', 'text-brand-bg');
+        b.classList.remove('bg-brand-bg', 'text-brand-text');
+      } else {
+        b.classList.remove('bg-brand-primary', 'text-brand-bg');
+        b.classList.add('bg-brand-bg', 'text-brand-text');
+      }
+    });
+    applyFilters();
+  });
+</script>

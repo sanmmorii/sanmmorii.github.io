@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import StatsStrip from '../components/StatsStrip.astro';
+import FeaturedProjects from '../components/FeaturedProjects.astro';
+import SkillsAbout from '../components/SkillsAbout.astro';
+import TimelineSection from '../components/TimelineSection.astro';
+import TestimonialContact from '../components/TestimonialContact.astro';
+import KegiatanHighlights from '../components/KegiatanHighlights.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { siteConfig } from '../data/site';
+---
+
+<BaseLayout
+  title={`${siteConfig.personal.name} — ${siteConfig.personal.role}`}
+  description={siteConfig.meta.description}
+>
+  <!-- 1. Hero Section -->
+  <Hero />
+
+  <!-- 2. Strip Statistik 4 Kolom (#800020) -->
+  <StatsStrip />
+
+  <!-- 3. Projects (Unggulan) -->
+  <FeaturedProjects />
+
+  <!-- 4. Skills & About Me -->
+  <SkillsAbout />
+
+  <!-- 5. Perjalanan (Timeline Rekam Jejak) -->
+  <TimelineSection />
+
+  <!-- 6. Testimoni & Ajakan Kontak (#800020) -->
+  <TestimonialContact />
+
+  <!-- 7. Kegiatan (Sorotan Foto) -->
+  <KegiatanHighlights />
+
+  <!-- 8. Bagian Kontak & Formulir -->
+  <ContactSection />
+</BaseLayout>

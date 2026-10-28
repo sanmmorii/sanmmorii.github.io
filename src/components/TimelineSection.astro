@@ -1,0 +1,178 @@
+---
+import { timelineData, tipeLabels } from '../data/timeline';
+import Icon from './Icon.astro';
+
+// Urutkan dari tahun terbaru
+const sortedTimeline = [...timelineData];
+---
+
+<section id="perjalanan" class="scroll-mt-20 py-16 md:py-24 border-t border-brand-border/60" aria-labelledby="timeline-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header Section (Gaya Editorial "MY DESIGN PROCESS") -->
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <div class="h-[1px] w-8 bg-brand-accent/40"></div>
+        <span class="font-sans text-xs tracking-[0.25em] font-semibold uppercase text-brand-accent">
+          Rekam Jejak & Pertumbuhan
+        </span>
+        <div class="h-[1px] w-8 bg-brand-accent/40"></div>
+      </div>
+
+      <h2 id="timeline-heading" class="font-serif text-3xl sm:text-5xl font-medium tracking-tight text-brand-primary uppercase">
+        Perjalanan Saya
+      </h2>
+      <p class="mt-3 text-sm text-brand-muted font-sans max-w-lg mx-auto">
+        Kilas balik proses belajar, keterlibatan kepemimpinan organisasi, prestasi kompetisi, serta pengalaman magang industri.
+      </p>
+
+      <!-- Filter Kategori Timeline -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mt-6" id="timeline-filter-buttons">
+        <button
+          type="button"
+          class="timeline-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-primary text-brand-bg transition-all"
+          data-filter="all"
+        >
+          Semua ({timelineData.length})
+        </button>
+        {Object.entries(tipeLabels).map(([key, item]) => {
+          const count = timelineData.filter((t) => t.tipe === key).length;
+          if (count === 0) return null;
+          return (
+            <button
+              type="button"
+              class="timeline-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-brand-surface border border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-primary transition-all"
+              data-filter={key}
+            >
+              {item.label} ({count})
+            </button>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Tampilan Desktop: Horizontal Step Bar (Mirip 01 - 05 Desain Referensi) -->
+    <div class="hidden lg:grid grid-cols-6 gap-4 relative pt-6" id="timeline-desktop-track">
+      <!-- Garis Penghubung Horizontal -->
+      <div class="absolute top-[48px] left-8 right-8 h-[1px] bg-brand-border z-0"></div>
+
+      {sortedTimeline.map((item, index) => {
+        const numStr = (index + 1).toString().padStart(2, '0');
+        const meta = tipeLabels[item.tipe];
+
+        return (
+          <div
+            class="timeline-card relative z-10 flex flex-col items-center text-center group"
+            data-type={item.tipe}
+          >
+            <!-- Nomor Step (01, 02, ...) -->
+            <span class="text-xs font-serif font-bold text-brand-muted/70 tracking-widest mb-2 block group-hover:text-brand-accent transition-colors">
+              {numStr}
+            </span>
+
+            <!-- Ikon Bundar (Sesuai Referensi Gambar) -->
+            <div class="w-14 h-14 rounded-full bg-brand-bg border border-brand-border flex items-center justify-center text-brand-primary shadow-sm group-hover:scale-110 group-hover:bg-brand-surface group-hover:border-brand-accent transition-all duration-300 mb-4">
+              <Icon name={meta.icon} class="w-5 h-5 text-brand-primary group-hover:text-brand-accent transition-colors" />
+            </div>
+
+            <!-- Tahun -->
+            <span class="px-2 py-0.5 rounded text-[10px] font-sans font-semibold tracking-wider uppercase bg-brand-surface text-brand-primary mb-2 border border-brand-border/60">
+              {item.tahun}
+            </span>
+
+            <!-- Judul & Institusi -->
+            <h3 class="font-serif text-base font-semibold text-brand-primary leading-snug group-hover:text-brand-accent transition-colors line-clamp-2">
+              {item.judul}
+            </h3>
+            <p class="text-xs font-medium text-brand-accent mt-1 tracking-wide">
+              {item.institusi}
+            </p>
+
+            <!-- Deskripsi Singkat -->
+            <p class="text-[12px] text-brand-text/80 leading-relaxed font-sans mt-2 line-clamp-3">
+              {item.deskripsi}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Tampilan Mobile & Tablet: Stepper Vertikal -->
+    <div class="lg:hidden relative pl-6 sm:pl-8 space-y-8" id="timeline-mobile-track">
+      <!-- Garis Vertikal -->
+      <div class="absolute top-2 bottom-2 left-2.5 sm:left-3.5 w-[1px] bg-brand-border"></div>
+
+      {sortedTimeline.map((item, index) => {
+        const numStr = (index + 1).toString().padStart(2, '0');
+        const meta = tipeLabels[item.tipe];
+
+        return (
+          <div
+            class="timeline-card relative pl-6 sm:pl-8 group"
+            data-type={item.tipe}
+          >
+            <!-- Dot / Ikon Lingkaran -->
+            <div class="absolute -left-3.5 sm:-left-3.5 top-0 w-8 h-8 rounded-full bg-brand-bg border border-brand-border flex items-center justify-center text-brand-primary shadow-sm group-hover:border-brand-accent group-hover:bg-brand-surface transition-all">
+              <Icon name={meta.icon} class="w-3.5 h-3.5 text-brand-primary" />
+            </div>
+
+            <!-- Konten Kartu -->
+            <div class="p-5 rounded-2xl bg-brand-surface/70 border border-brand-border/80 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-serif font-bold text-brand-muted">
+                  STEP {numStr}
+                </span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-sans font-semibold tracking-wider uppercase bg-brand-bg text-brand-primary border border-brand-border">
+                  {item.tahun}
+                </span>
+              </div>
+
+              <h3 class="font-serif text-lg font-semibold text-brand-primary leading-tight">
+                {item.judul}
+              </h3>
+              <p class="text-xs font-medium text-brand-accent">
+                {item.institusi}
+              </p>
+              <p class="text-xs sm:text-sm text-brand-text/85 font-sans leading-relaxed">
+                {item.deskripsi}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Filter interaktif timeline
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('.timeline-filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.timeline-card');
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter || 'all';
+
+      // Update button styling
+      filterButtons.forEach((b) => {
+        b.classList.remove('bg-brand-primary', 'text-brand-bg');
+        b.classList.add('bg-brand-surface', 'text-brand-text');
+      });
+      btn.classList.remove('bg-brand-surface', 'text-brand-text');
+      btn.classList.add('bg-brand-primary', 'text-brand-bg');
+
+      // Filter cards
+      cards.forEach((card) => {
+        const type = card.dataset.type;
+        if (filter === 'all' || type === filter) {
+          card.style.display = '';
+          card.style.opacity = '1';
+        } else {
+          card.style.display = 'none';
+          card.style.opacity = '0';
+        }
+      });
+    });
+  });
+</script>

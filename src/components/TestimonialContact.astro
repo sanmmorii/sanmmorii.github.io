@@ -1,0 +1,85 @@
+---
+import { siteConfig } from '../data/site';
+import Icon from './Icon.astro';
+
+const { testimonial, contactCTA, email } = siteConfig.personal;
+const hasTestimonial = testimonial && testimonial.enabled && testimonial.quote && testimonial.quote.trim().length > 0;
+---
+
+<section class="w-full bg-brand-primary text-brand-bg py-16 md:py-20 border-t border-brand-primary-dark" aria-label="Testimoni dan Kontak">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`grid grid-cols-1 ${hasTestimonial ? 'lg:grid-cols-12 gap-12 lg:gap-16' : 'max-w-3xl mx-auto'} items-center`}>
+      
+      <!-- Kolom Testimoni (Opsional: Otomatis Sembunyi Jika Data Kosong) -->
+      {hasTestimonial && (
+        <div class="lg:col-span-6 space-y-6 lg:border-r lg:border-white/15 lg:pr-12">
+          <!-- Quote Icon -->
+          <span class="font-serif text-6xl text-brand-accent-light/60 leading-none select-none block -mb-4">
+            “
+          </span>
+
+          <blockquote class="text-base sm:text-lg font-serif italic text-brand-bg/95 leading-relaxed">
+            {testimonial.quote}
+          </blockquote>
+
+          <div class="pt-2">
+            <cite class="not-italic font-sans text-sm font-semibold tracking-wide text-brand-bg block">
+              — {testimonial.author}
+            </cite>
+            <span class="text-xs text-brand-bg/70 tracking-wider font-sans block mt-0.5">
+              {testimonial.title}
+            </span>
+          </div>
+
+          <!-- Indikator Dots Kecil (Mirip Referensi Gambar) -->
+          <div class="flex items-center gap-2 pt-2">
+            <span class="w-2 h-2 rounded-full bg-brand-accent-light"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+          </div>
+        </div>
+      )}
+
+      <!-- Kolom Ajakan Kontak (CTA) -->
+      <div class={`${hasTestimonial ? 'lg:col-span-6' : 'text-center'} space-y-6`}>
+        <div class={`flex items-center gap-4 ${!hasTestimonial ? 'justify-center' : ''}`}>
+          <div class="w-12 h-12 rounded-full border border-brand-accent-light/40 flex items-center justify-center text-brand-accent-light shadow-inner">
+            <Icon name="mail" class="w-5 h-5" />
+          </div>
+          <div>
+            <span class="text-xs font-sans tracking-[0.2em] uppercase font-semibold text-brand-accent-light block">
+              {contactCTA.badge}
+            </span>
+            <h3 class="font-serif text-2xl sm:text-3xl font-medium tracking-tight text-brand-bg leading-tight">
+              {contactCTA.title}
+            </h3>
+          </div>
+        </div>
+
+        <p class={`text-sm text-brand-bg/85 font-sans leading-relaxed max-w-lg ${!hasTestimonial ? 'mx-auto' : ''}`}>
+          {contactCTA.description}
+        </p>
+
+        <div class={`pt-2 flex flex-wrap items-center gap-4 ${!hasTestimonial ? 'justify-center' : ''}`}>
+          <a
+            href={`mailto:${email}?subject=${encodeURIComponent(contactCTA.subjectPrefill)}`}
+            class="group inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-brand-bg text-brand-primary text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-brand-surface hover:text-brand-primary-dark transition-all duration-300 shadow-md"
+          >
+            <span>{contactCTA.buttonText}</span>
+            <span class="transform group-hover:translate-x-1 transition-transform">
+              <Icon name="arrow-right" class="w-4 h-4 text-brand-primary" />
+            </span>
+          </a>
+
+          <a
+            href="#kontak"
+            class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-white/20 text-brand-bg text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-white/10 transition-colors"
+          >
+            <span>Formulir Pesan</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

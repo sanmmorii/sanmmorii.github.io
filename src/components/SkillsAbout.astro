@@ -1,0 +1,142 @@
+---
+import { Image } from 'astro:assets';
+import { siteConfig } from '../data/site';
+import Icon from './Icon.astro';
+import aboutVase from '../assets/about-vase.jpg';
+
+// Daftar tools & keahlian dengan lingkaran ikon rapi seperti di gambar referensi
+const toolsGrid = [
+  { name: "TypeScript", abbr: "TS", desc: "Bahasa Utama" },
+  { name: "Astro", abbr: "As", desc: "Framework Web" },
+  { name: "React", abbr: "Re", desc: "Library UI" },
+  { name: "Tailwind", abbr: "TW", desc: "CSS Modern" },
+  { name: "Node.js", abbr: "JS", desc: "Runtime Server" },
+  { name: "Python", abbr: "Py", desc: "Data & ML" },
+  { name: "PostgreSQL", abbr: "DB", desc: "Basis Data" },
+  { name: "Figma", abbr: "Fg", desc: "UI/UX Design" },
+  { name: "Git", abbr: "Git", desc: "Versi Kode" },
+  { name: "Docker", abbr: "Dk", desc: "Kontainer" },
+];
+---
+
+<section id="tentang" class="scroll-mt-20 py-16 md:py-24 bg-brand-surface/40 border-t border-brand-border/60" aria-labelledby="about-heading">
+  <div id="keahlian" class="scroll-mt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
+      
+      <!-- Kolom Kiri: Tools & Technologies (Mirip Referensi Gambar) -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="flex items-center gap-3">
+          <h3 class="font-sans text-xs tracking-[0.25em] font-semibold uppercase text-brand-primary">
+            Keahlian & Alat Kerja
+          </h3>
+          <div class="h-[1px] flex-1 bg-brand-border"></div>
+        </div>
+
+        <p class="text-sm text-brand-muted leading-relaxed font-sans">
+          Teknologi dan perkakas perangkat lunak yang saya gunakan sehari-hari untuk merancang antarmuka, menulis kode yang bersih, serta membangun produk digital yang andal.
+        </p>
+
+        <!-- Grid Ikon Bundar (4 kolom di mobile, 4-5 di desktop) -->
+        <div class="grid grid-cols-4 sm:grid-cols-5 gap-y-6 gap-x-4 pt-2">
+          {toolsGrid.map((tool) => (
+            <div class="flex flex-col items-center text-center group cursor-default">
+              <!-- Lingkaran Ikon Bergaya Editorial -->
+              <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-brand-surface border border-brand-border/80 flex items-center justify-center shadow-sm group-hover:border-brand-primary group-hover:bg-brand-primary group-hover:text-brand-bg transition-all duration-300">
+                <span class="font-serif font-semibold text-sm sm:text-base text-brand-primary group-hover:text-brand-bg tracking-tight transition-colors">
+                  {tool.abbr}
+                </span>
+              </div>
+              <span class="mt-2 text-[11px] font-sans font-semibold tracking-wider uppercase text-brand-text/90 group-hover:text-brand-accent transition-colors">
+                {tool.name}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <!-- Ringkasan Kategori Keahlian -->
+        <div class="pt-6 border-t border-brand-border/60 space-y-3">
+          <div class="text-xs font-semibold tracking-wider uppercase text-brand-muted">
+            Fokus Kompetensi:
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full text-xs bg-brand-surface border border-brand-border text-brand-primary font-medium">
+              Frontend Architecture
+            </span>
+            <span class="px-3 py-1 rounded-full text-xs bg-brand-surface border border-brand-border text-brand-primary font-medium">
+              UI/UX Prototyping
+            </span>
+            <span class="px-3 py-1 rounded-full text-xs bg-brand-surface border border-brand-border text-brand-primary font-medium">
+              Web Performance & SEO
+            </span>
+            <span class="px-3 py-1 rounded-full text-xs bg-brand-surface border border-brand-border text-brand-primary font-medium">
+              Applied Machine Learning
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: TENTANG SAYA + Foto Arch Kedua (Vase/Study) -->
+      <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        
+        <!-- Teks Tentang Saya (md:col-span-8) -->
+        <div class="md:col-span-8 space-y-5">
+          <div class="flex items-center gap-2">
+            <span class="font-sans text-xs tracking-[0.25em] font-semibold uppercase text-brand-accent">
+              {siteConfig.personal.about.badge}
+            </span>
+            <Icon name="star" class="w-3.5 h-3.5 text-brand-accent" />
+          </div>
+
+          <h2 id="about-heading" class="font-serif text-3xl sm:text-4xl font-medium tracking-tight text-brand-primary leading-snug">
+            {siteConfig.personal.about.heading}
+          </h2>
+
+          <div class="space-y-4 text-sm sm:text-base text-brand-text/90 leading-relaxed font-sans">
+            {siteConfig.personal.about.bio.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
+
+          <!-- Tanda Tangan Script Tipis (Sesuai Gambar Referensi) -->
+          <div class="pt-4 flex items-center justify-between border-t border-brand-border/60">
+            <div>
+              <span class="font-script text-4xl sm:text-5xl text-brand-accent block transform -rotate-2 select-none">
+                {siteConfig.personal.about.signatureText}
+              </span>
+              {siteConfig.personal.about.signatureSubtext && (
+                <span class="text-xs text-brand-muted tracking-wider uppercase font-sans mt-1 block">
+                  {siteConfig.personal.about.signatureSubtext}
+                </span>
+              )}
+            </div>
+            
+            <a
+              href="#perjalanan"
+              class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-brand-primary hover:text-brand-accent transition-colors"
+            >
+              <span>Lihat Perjalanan</span>
+              <Icon name="arrow-right" class="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Foto Kedua di Frame Arch Kecil (md:col-span-4) - Meniru Frame Arch Vas Bunga pada Referensi -->
+        <div class="md:col-span-4 flex justify-center">
+          <div class="relative w-44 sm:w-48 aspect-[3/4] frame-arch-vase bg-brand-surface border border-brand-border shadow-md overflow-hidden group">
+            <Image
+              src={aboutVase}
+              alt="Sudut ruang kerja dan studi minimalis"
+              width={400}
+              height={530}
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-brand-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>

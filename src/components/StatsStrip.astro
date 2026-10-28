@@ -1,0 +1,126 @@
+---
+import { getCollection } from 'astro:content';
+import { siteConfig } from '../data/site';
+import { timelineData } from '../data/timeline';
+import Icon from './Icon.astro';
+
+// Hitung data dinamis dari content collections dan timeline
+const projects = await getCollection('projects');
+const kegiatan = await getCollection('kegiatan');
+
+// Jumlah sertifikat dan lomba dari timeline
+const achievementsCount = timelineData.filter(
+  (item) => item.tipe === 'lomba' || item.tipe === 'sertifikat'
+).length || siteConfig.personal.stats.achievementsCount.number;
+
+// Statistik final
+const stats = [
+  {
+    target: siteConfig.personal.stats.yearsExperience.number,
+    suffix: siteConfig.personal.stats.yearsExperience.suffix,
+    label: siteConfig.personal.stats.yearsExperience.label,
+    icon: "sparkle",
+  },
+  {
+    target: Math.max(projects.length, siteConfig.personal.stats.projectsCompleted.number),
+    suffix: siteConfig.personal.stats.projectsCompleted.suffix,
+    label: siteConfig.personal.stats.projectsCompleted.label,
+    icon: "briefcase",
+  },
+  {
+    target: Math.max(kegiatan.length, siteConfig.personal.stats.activitiesCount.number),
+    suffix: siteConfig.personal.stats.activitiesCount.suffix,
+    label: siteConfig.personal.stats.activitiesCount.label,
+    icon: "user-group",
+  },
+  {
+    target: Math.max(achievementsCount, siteConfig.personal.stats.achievementsCount.number),
+    suffix: siteConfig.personal.stats.achievementsCount.suffix,
+    label: siteConfig.personal.stats.achievementsCount.label,
+    icon: "trophy",
+  },
+];
+---
+
+<section class="w-full bg-brand-primary text-brand-bg py-10 md:py-14 border-y border-brand-primary-dark shadow-inner" aria-label="Statistik Pencapaian">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 divide-y md:divide-y-0 md:divide-x divide-white/10">
+      {stats.map((stat, idx) => (
+        <div class={`flex flex-col items-center text-center ${idx > 0 ? 'pt-6 md:pt-0' : ''} px-4`}>
+          <!-- Ikon Aksen Halus -->
+          <div class="mb-3 p-2 rounded-full bg-white/5 border border-white/10 text-brand-accent-light">
+            <Icon name={stat.icon} class="w-5 h-5 text-brand-accent-light" />
+          </div>
+
+          <!-- Angka Beranimasi Count-Up -->
+          <div class="flex items-baseline justify-center">
+            <span
+              class="stat-counter font-serif text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-brand-bg"
+              data-target={stat.target}
+            >
+              0
+            </span>
+            <span class="font-serif text-3xl sm:text-4xl lg:text-5xl text-brand-accent-light font-light ml-0.5">
+              {stat.suffix}
+            </span>
+          </div>
+
+          <!-- Label Deskripsi -->
+          <p class="mt-2 text-xs sm:text-sm font-sans tracking-[0.12em] uppercase text-brand-bg/80 font-medium">
+            {stat.label}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Animasi Count-Up dengan Intersection Observer
+  function initCounters() {
+    const counters = document.querySelectorAll<HTMLElement>('.stat-counter');
+    if (!counters.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const counter = entry.target as HTMLElement;
+            const target = parseInt(counter.dataset.target || '0', 10);
+            const duration = 1800; // 1.8 detik
+            const startTime = performance.now();
+
+            function updateCounter(currentTime: number) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              // Easing out cubic
+              const easeOut = 1 - Math.pow(1 - progress, 3);
+              const currentVal = Math.floor(easeOut * target);
+
+              counter.textContent = currentVal.toString();
+
+              if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+              } else {
+                counter.textContent = target.toString();
+              }
+            }
+
+            requestAnimationFrame(updateCounter);
+            obs.unobserve(counter);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    counters.forEach((c) => observer.observe(c));
+  }
+
+  // Inisialisasi saat DOM siap
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCounters);
+  } else {
+    initCounters();
+  }
+</script>

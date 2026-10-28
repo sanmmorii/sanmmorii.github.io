@@ -1,0 +1,212 @@
+---
+import Icon from './Icon.astro';
+---
+
+<!-- Lightbox Modal Overlay -->
+<div
+  id="global-lightbox"
+  class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex flex-col justify-between p-4 sm:p-6 transition-opacity duration-300 select-none opacity-0"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Penampil Foto Layar Penuh"
+>
+  <!-- Top Bar: Info & Close Button -->
+  <div class="flex items-center justify-between text-white/90 z-20">
+    <div class="flex items-center gap-3">
+      <span id="lightbox-counter" class="text-xs font-sans tracking-widest uppercase bg-white/10 px-3 py-1 rounded-full text-white/80">
+        1 / 1
+      </span>
+      <span id="lightbox-category" class="text-xs font-sans font-semibold tracking-wider uppercase text-brand-accent-light hidden sm:inline-block">
+        Kategori
+      </span>
+    </div>
+
+    <button
+      id="lightbox-close"
+      type="button"
+      class="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+      aria-label="Tutup penampil foto (Esc)"
+    >
+      <Icon name="close" class="w-6 h-6" />
+    </button>
+  </div>
+
+  <!-- Center: Image Stage with Navigation Arrows -->
+  <div class="relative flex-1 flex items-center justify-center my-2 overflow-hidden" id="lightbox-touch-area">
+    <!-- Prev Arrow Button -->
+    <button
+      id="lightbox-prev"
+      type="button"
+      class="absolute left-2 sm:left-4 z-20 p-3 rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 transition-all hover:scale-110"
+      aria-label="Foto sebelumnya (Panah Kiri)"
+    >
+      <Icon name="arrow-left" class="w-5 h-5" />
+    </button>
+
+    <!-- Main Lightbox Image -->
+    <img
+      id="lightbox-img"
+      src=""
+      alt=""
+      class="max-h-[75vh] max-w-[90vw] object-contain rounded-lg shadow-2xl transition-transform duration-200"
+    />
+
+    <!-- Next Arrow Button -->
+    <button
+      id="lightbox-next"
+      type="button"
+      class="absolute right-2 sm:right-4 z-20 p-3 rounded-full bg-black/50 hover:bg-black/80 text-white border border-white/20 transition-all hover:scale-110"
+      aria-label="Foto selanjutnya (Panah Kanan)"
+    >
+      <Icon name="arrow-right" class="w-5 h-5" />
+    </button>
+  </div>
+
+  <!-- Bottom Bar: Caption & Album Link -->
+  <div class="text-center max-w-2xl mx-auto z-20 space-y-1">
+    <h4 id="lightbox-title" class="text-white text-base sm:text-lg font-serif font-medium"></h4>
+    <p id="lightbox-date" class="text-xs text-white/70 font-sans tracking-wider"></p>
+    <a
+      id="lightbox-album-link"
+      href="#"
+      class="inline-block mt-2 text-xs font-sans font-semibold tracking-wider uppercase text-brand-accent-light hover:underline"
+    >
+      Buka Album Lengkap →
+    </a>
+  </div>
+</div>
+
+<script>
+  interface LightboxItem {
+    src: string;
+    title: string;
+    date: string;
+    category: string;
+    albumUrl: string;
+  }
+
+  let items: LightboxItem[] = [];
+  let currentIndex = 0;
+
+  const lightbox = document.getElementById('global-lightbox');
+  const imgEl = document.getElementById('lightbox-img') as HTMLImageElement;
+  const titleEl = document.getElementById('lightbox-title');
+  const dateEl = document.getElementById('lightbox-date');
+  const categoryEl = document.getElementById('lightbox-category');
+  const counterEl = document.getElementById('lightbox-counter');
+  const albumLinkEl = document.getElementById('lightbox-album-link') as HTMLAnchorElement;
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+  const touchArea = document.getElementById('lightbox-touch-area');
+
+  function openLightbox(index: number) {
+    if (!items.length) return;
+    currentIndex = (index + items.length) % items.length;
+    const item = items[currentIndex];
+
+    if (imgEl) {
+      imgEl.src = item.src;
+      imgEl.alt = item.title;
+    }
+    if (titleEl) titleEl.textContent = item.title;
+    if (dateEl) dateEl.textContent = item.date;
+    if (categoryEl) categoryEl.textContent = item.category;
+    if (counterEl) counterEl.textContent = `${currentIndex + 1} / ${items.length}`;
+    if (albumLinkEl) {
+      if (item.albumUrl && item.albumUrl !== window.location.pathname) {
+        albumLinkEl.href = item.albumUrl;
+        albumLinkEl.style.display = 'inline-block';
+      } else {
+        albumLinkEl.style.display = 'none';
+      }
+    }
+
+    if (lightbox) {
+      lightbox.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        lightbox.classList.remove('opacity-0');
+      }, 10);
+    }
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.add('opacity-0');
+    setTimeout(() => {
+      lightbox.classList.add('hidden');
+      document.body.style.overflow = '';
+      if (imgEl) imgEl.src = '';
+    }, 250);
+  }
+
+  function showNext() {
+    openLightbox(currentIndex + 1);
+  }
+
+  function showPrev() {
+    openLightbox(currentIndex - 1);
+  }
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    if (!lightbox || lightbox.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') showNext();
+    if (e.key === 'ArrowLeft') showPrev();
+  });
+
+  closeBtn?.addEventListener('click', closeLightbox);
+  nextBtn?.addEventListener('click', showNext);
+  prevBtn?.addEventListener('click', showPrev);
+
+  // Click outside image to close
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === touchArea) {
+      closeLightbox();
+    }
+  });
+
+  // Touch Swipe Support for Mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  touchArea?.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  touchArea?.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const diff = touchEndX - touchStartX;
+    if (Math.abs(diff) > 40) {
+      if (diff < 0) {
+        showNext(); // Swipe left -> Next
+      } else {
+        showPrev(); // Swipe right -> Prev
+      }
+    }
+  }
+
+  // Global function to attach triggers
+  (window as any).registerLightboxGallery = function (galleryItems: LightboxItem[]) {
+    items = galleryItems;
+
+    const triggers = document.querySelectorAll<HTMLElement>('[data-lightbox-index]');
+    triggers.forEach((trigger) => {
+      trigger.onclick = (e) => {
+        // Jangan blokir navigasi jika yang diklik adalah link album langsung
+        const target = e.target as HTMLElement;
+        if (target.closest('.no-lightbox')) return;
+
+        e.preventDefault();
+        const idx = parseInt(trigger.dataset.lightboxIndex || '0', 10);
+        openLightbox(idx);
+      };
+    });
+  };
+</script>

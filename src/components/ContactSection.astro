@@ -1,0 +1,260 @@
+---
+import { siteConfig } from '../data/site';
+import Icon from './Icon.astro';
+
+const { personal } = siteConfig;
+---
+
+<section id="kontak" class="scroll-mt-20 py-16 md:py-24 bg-brand-surface/30 border-t border-brand-border/60" aria-labelledby="contact-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Header Section -->
+      <div class="text-center space-y-3 mb-12">
+        <span class="text-xs font-sans tracking-[0.25em] font-semibold uppercase text-brand-accent">
+          Mari Terhubung
+        </span>
+        <h2 id="contact-heading" class="font-serif text-3xl sm:text-5xl font-medium tracking-tight text-brand-primary uppercase">
+          Hubungi Saya
+        </h2>
+        <p class="text-sm sm:text-base text-brand-muted max-w-lg mx-auto font-sans leading-relaxed">
+          Punya ide proyek menarik, tawaran magang, atau ingin berdiskusi seputar teknologi? Jangan ragu untuk mengirimkan pesan.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        
+        <!-- Kolom Info Kontak (Kiri) -->
+        <div class="md:col-span-5 space-y-6 bg-brand-surface rounded-2xl p-6 sm:p-8 border border-brand-border">
+          <h3 class="font-serif text-2xl font-medium text-brand-primary">
+            Informasi Kontak
+          </h3>
+          <p class="text-xs sm:text-sm text-brand-text/80 leading-relaxed font-sans">
+            Saya biasanya merespons email dalam kurun waktu kurang dari 24 jam kerja.
+          </p>
+
+          <div class="space-y-4 pt-2">
+            <!-- Email -->
+            <div class="flex items-start gap-3">
+              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border">
+                <Icon name="mail" class="w-4 h-4" />
+              </div>
+              <div>
+                <span class="text-[11px] font-sans tracking-wider uppercase font-semibold text-brand-muted block">
+                  Surel / Email
+                </span>
+                <a
+                  href={`mailto:${personal.email}`}
+                  class="text-sm font-semibold text-brand-primary hover:text-brand-accent transition-colors break-all"
+                >
+                  {personal.email}
+                </a>
+              </div>
+            </div>
+
+            <!-- Lokasi -->
+            <div class="flex items-start gap-3">
+              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border">
+                <Icon name="map-pin" class="w-4 h-4" />
+              </div>
+              <div>
+                <span class="text-[11px] font-sans tracking-wider uppercase font-semibold text-brand-muted block">
+                  Lokasi
+                </span>
+                <span class="text-sm font-medium text-brand-text">
+                  {personal.location}
+                </span>
+              </div>
+            </div>
+
+            <!-- Kampus -->
+            <div class="flex items-start gap-3">
+              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border">
+                <Icon name="academic-cap" class="w-4 h-4" />
+              </div>
+              <div>
+                <span class="text-[11px] font-sans tracking-wider uppercase font-semibold text-brand-muted block">
+                  Institusi
+                </span>
+                <span class="text-sm font-medium text-brand-text">
+                  {personal.university}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tombol Salin Email -->
+          <div class="pt-4 border-t border-brand-border/60 space-y-4">
+            <button
+              id="copy-email-btn"
+              type="button"
+              class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-brand-primary/40 text-xs font-semibold tracking-wider uppercase text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-colors"
+              data-email={personal.email}
+            >
+              <span id="copy-text">Salin Alamat Email</span>
+            </button>
+
+            <!-- Tautan Sosial Media Tambahan di Bagian Kontak -->
+            <div class="pt-2 flex items-center justify-center gap-3">
+              {personal.social.github && (
+                <a
+                  href={personal.social.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-all"
+                  aria-label="GitHub"
+                  title="GitHub"
+                >
+                  <Icon name="github" class="w-4 h-4" />
+                </a>
+              )}
+              {personal.social.linkedin && (
+                <a
+                  href={personal.social.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-all"
+                  aria-label="LinkedIn"
+                  title="LinkedIn"
+                >
+                  <Icon name="linkedin" class="w-4 h-4" />
+                </a>
+              )}
+              {personal.social.instagram && (
+                <a
+                  href={personal.social.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-all"
+                  aria-label="Instagram"
+                  title="Instagram"
+                >
+                  <Icon name="instagram" class="w-4 h-4" />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom Formulir Pesan (Kanan) -->
+        <div class="md:col-span-7 bg-brand-surface rounded-2xl p-6 sm:p-8 border border-brand-border">
+          <form id="contact-form" class="space-y-4">
+            <div>
+              <label for="name" class="block text-xs font-sans font-semibold tracking-wider uppercase text-brand-primary mb-1.5">
+                Nama Lengkap Anda
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="Contoh: Budi Pratama"
+                class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-border text-brand-text text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="block text-xs font-sans font-semibold tracking-wider uppercase text-brand-primary mb-1.5">
+                Alamat Email Anda
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="nama@perusahaan.com"
+                class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-border text-brand-text text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label for="subject" class="block text-xs font-sans font-semibold tracking-wider uppercase text-brand-primary mb-1.5">
+                Subjek Pesan
+              </label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                required
+                placeholder="Contoh: Tawaran Kolaborasi Proyek Web"
+                class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-border text-brand-text text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label for="message" class="block text-xs font-sans font-semibold tracking-wider uppercase text-brand-primary mb-1.5">
+                Isi Pesan
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                required
+                placeholder="Tuliskan pesan atau detail kesempatan yang ingin didiskusikan..."
+                class="w-full px-4 py-3 rounded-xl bg-brand-bg border border-brand-border text-brand-text text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all resize-y"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full py-3.5 px-6 rounded-xl bg-brand-primary text-brand-bg text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-brand-primary-dark transition-all duration-300 shadow-md flex items-center justify-center gap-2"
+            >
+              <span>Kirim Pesan Sekarang</span>
+              <Icon name="arrow-right" class="w-4 h-4" />
+            </button>
+          </form>
+
+          <p id="form-feedback" class="hidden mt-3 text-xs text-center font-medium text-emerald-800"></p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ recipientName: personal.shortName }}>
+  // Fitur salin email ke clipboard
+  const copyBtn = document.getElementById('copy-email-btn');
+  const copyText = document.getElementById('copy-text');
+
+  copyBtn?.addEventListener('click', async () => {
+    const email = copyBtn.dataset.email || '';
+    try {
+      await navigator.clipboard.writeText(email);
+      if (copyText) copyText.textContent = 'Berhasil Disalin!';
+      setTimeout(() => {
+        if (copyText) copyText.textContent = 'Salin Alamat Email';
+      }, 2500);
+    } catch {
+      window.location.href = `mailto:${email}`;
+    }
+  });
+
+  // Handler formulir pengiriman
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const feedback = document.getElementById('form-feedback');
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const subject = formData.get('subject');
+    const message = formData.get('message');
+
+    // Buka mail client dengan data formulir
+    const mailtoUrl = `mailto:${(document.getElementById('copy-email-btn') as HTMLElement)?.dataset.email}?subject=${encodeURIComponent(
+      String(subject)
+    )}&body=${encodeURIComponent(
+      `Halo ${recipientName},\n\nNama: ${name}\nEmail: ${email}\n\nPesan:\n${message}`
+    )}`;
+
+    window.location.href = mailtoUrl;
+
+    if (feedback) {
+      feedback.textContent = 'Membuka aplikasi email Anda untuk mengirim pesan... Terima kasih!';
+      feedback.classList.remove('hidden');
+    }
+  });
+</script>

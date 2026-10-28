@@ -1,0 +1,118 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { getAllPhotosWithAlbumData, formatTanggalIndonesia } from '../utils/kegiatan';
+import Icon from './Icon.astro';
+
+const albums = await getCollection('kegiatan');
+const allPhotos = getAllPhotosWithAlbumData(albums);
+// Ambil 6 foto sorotan untuk beranda
+const highlightPhotos = allPhotos.slice(0, 6);
+
+// Data JSON untuk registrasi Lightbox
+const lightboxItems = highlightPhotos.map((p) => ({
+  src: p.image.src,
+  title: p.albumTitle,
+  date: formatTanggalIndonesia(p.albumDate),
+  category: p.albumCategory,
+  albumUrl: `/kegiatan/${p.slug}`,
+}));
+---
+
+<section id="kegiatan" class="scroll-mt-20 py-16 md:py-24 border-t border-brand-border/60" aria-labelledby="kegiatan-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-brand-border">
+      <div>
+        <span class="text-xs font-sans tracking-[0.2em] uppercase font-semibold text-brand-muted block mb-1">
+          Dokumentasi & Pengalaman
+        </span>
+        <div class="flex items-center gap-2">
+          <h2 id="kegiatan-heading" class="font-serif text-3xl sm:text-5xl font-medium tracking-tight text-brand-primary uppercase">
+            Sorotan Kegiatan
+          </h2>
+          <Icon name="star" class="w-4 h-4 text-brand-accent mb-1" />
+        </div>
+      </div>
+
+      <a
+        href="/kegiatan"
+        class="group inline-flex items-center gap-2 text-xs font-sans tracking-[0.18em] font-semibold uppercase text-brand-primary hover:text-brand-accent transition-colors mt-4 sm:mt-0"
+      >
+        <span>Lihat Semua Kegiatan ({allPhotos.length} Foto)</span>
+        <span class="transform group-hover:translate-x-1 transition-transform">
+          <Icon name="arrow-right" class="w-4 h-4" />
+        </span>
+      </a>
+    </div>
+
+    <!-- Grid Foto Sorotan (2 kolom mobile, 3 di tablet/desktop) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {highlightPhotos.map((item, index) => (
+        <div
+          class="group relative rounded-2xl overflow-hidden bg-brand-surface border border-brand-border shadow-sm cursor-pointer aspect-[4/3] flex flex-col justify-end"
+          data-lightbox-index={index}
+        >
+          <!-- Gambar Kegiatan -->
+          <Image
+            src={item.image}
+            alt={item.albumTitle}
+            width={600}
+            height={450}
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+            loading="lazy"
+          />
+
+          <!-- Gradient Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-brand-primary/85 via-brand-primary/20 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+
+          <!-- Kategori Tag di Pojok Kiri Atas -->
+          <div class="absolute top-3.5 left-3.5 z-10">
+            <span class="px-2.5 py-1 rounded-full text-[11px] font-sans font-semibold tracking-wider uppercase bg-brand-bg/95 text-brand-primary shadow-sm backdrop-blur-sm">
+              {item.albumCategory}
+            </span>
+          </div>
+
+          <!-- Ikon Kaca Pembesar di Kanan Atas saat Hover -->
+          <div class="absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-full bg-brand-bg/80 text-brand-primary opacity-0 group-hover:opacity-100 transform translate-y-1 group-hover:translate-y-0 transition-all duration-300 flex items-center justify-center shadow-md">
+            <Icon name="arrow-up-right" class="w-3.5 h-3.5" />
+          </div>
+
+          <!-- Konten Teks Bawah -->
+          <div class="relative z-10 p-5 space-y-1 transform group-hover:-translate-y-0.5 transition-transform duration-300">
+            <span class="text-[11px] font-sans font-medium text-brand-bg/80 tracking-wider block">
+              {formatTanggalIndonesia(item.albumDate)}
+            </span>
+            <h3 class="font-serif text-lg font-medium text-brand-bg leading-snug line-clamp-1 group-hover:text-brand-accent-light transition-colors">
+              {item.albumTitle}
+            </h3>
+            <p class="text-xs text-brand-bg/75 font-sans line-clamp-1">
+              {item.albumDescription}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Tombol CTA Besar ke Galeri Lengkap -->
+    <div class="mt-12 text-center">
+      <a
+        href="/kegiatan"
+        class="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-brand-surface border border-brand-border text-brand-primary text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-brand-primary hover:text-brand-bg hover:border-brand-primary transition-all duration-300 shadow-sm"
+      >
+        <span>Jelajahi Galeri Kegiatan Lengkap & Album Foto</span>
+        <Icon name="arrow-right" class="w-4 h-4" />
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script define:vars={{ lightboxItems }}>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof (window as any).registerLightboxGallery === 'function') {
+      (window as any).registerLightboxGallery(lightboxItems);
+    }
+  });
+</script>

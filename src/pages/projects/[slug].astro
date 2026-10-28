@@ -1,0 +1,144 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { siteConfig } from '../../data/site';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { title, description, role, tech, year, demoUrl, repoUrl, cover } = project.data;
+const { Content } = await render(project);
+---
+
+<BaseLayout
+  title={`${title} — Portofolio ${siteConfig.personal.name}`}
+  description={description}
+>
+  <article class="py-12 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Breadcrumb / Tombol Kembali -->
+    <div class="mb-8">
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-2 text-xs font-sans tracking-wider uppercase font-semibold text-brand-primary hover:text-brand-accent transition-colors"
+      >
+        <Icon name="arrow-left" class="w-4 h-4" />
+        <span>Kembali ke Seluruh Proyek</span>
+      </a>
+    </div>
+
+    <!-- Header Detail Proyek -->
+    <header class="space-y-4 pb-8 border-b border-brand-border">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="px-3 py-1 rounded-full text-xs font-sans font-semibold tracking-wider uppercase bg-brand-primary text-brand-bg">
+          Tahun {year}
+        </span>
+        <span class="px-3 py-1 rounded-full text-xs font-sans font-medium tracking-wide bg-brand-surface border border-brand-border text-brand-primary">
+          Peran: {role}
+        </span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-brand-primary leading-tight">
+        {title}
+      </h1>
+
+      <p class="text-base sm:text-lg text-brand-text/90 font-sans leading-relaxed">
+        {description}
+      </p>
+
+      <!-- Tech Stack & Tautan Aksi -->
+      <div class="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <!-- Tech Tags -->
+        <div class="flex flex-wrap gap-2">
+          {tech.map((t) => (
+            <span class="px-3 py-1 rounded-lg text-xs font-sans font-medium bg-brand-surface border border-brand-border text-brand-primary">
+              {t}
+            </span>
+          ))}
+        </div>
+
+        <!-- Tombol Demo & Repo -->
+        <div class="flex items-center gap-3">
+          {demoUrl && (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-primary text-brand-bg text-xs font-semibold tracking-wider uppercase hover:bg-brand-primary-dark transition-colors shadow-sm"
+            >
+              <span>Kunjungi Demo</span>
+              <Icon name="arrow-up-right" class="w-3.5 h-3.5" />
+            </a>
+          )}
+
+          {repoUrl && (
+            <a
+              href={repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-brand-border bg-brand-surface text-brand-primary text-xs font-semibold tracking-wider uppercase hover:bg-brand-bg transition-colors"
+            >
+              <Icon name="github" class="w-4 h-4" />
+              <span>Repositori</span>
+            </a>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <!-- Gambar Cover Utama -->
+    <div class="my-10 rounded-2xl overflow-hidden border border-brand-border shadow-xl bg-brand-surface">
+      <Image
+        src={cover}
+        alt={`Cover proyek ${title}`}
+        width={1200}
+        height={750}
+        quality={90}
+        class="w-full h-auto object-cover"
+        loading="eager"
+      />
+    </div>
+
+    <!-- Konten Dokumen Markdown -->
+    <div class="prose prose-lg max-w-none font-sans text-brand-text leading-relaxed
+      prose-headings:font-serif prose-headings:text-brand-primary prose-headings:font-medium prose-headings:tracking-tight
+      prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-b prose-h2:border-brand-border/60 prose-h2:pb-2
+      prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
+      prose-p:text-brand-text/90 prose-p:leading-relaxed prose-p:mb-5
+      prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-2
+      prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-2
+      prose-li:text-brand-text/90
+      prose-strong:text-brand-primary prose-strong:font-semibold
+      prose-blockquote:border-l-4 prose-blockquote:border-brand-accent prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-brand-muted
+    ">
+      <Content />
+    </div>
+
+    <!-- Navigasi Bawah -->
+    <div class="mt-16 pt-8 border-t border-brand-border flex items-center justify-between">
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-brand-primary hover:text-brand-accent transition-colors"
+      >
+        <Icon name="arrow-left" class="w-4 h-4" />
+        <span>Daftar Proyek Lainnya</span>
+      </a>
+
+      <a
+        href="/#kontak"
+        class="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-brand-primary text-xs font-semibold tracking-wider uppercase text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-colors"
+      >
+        <span>Diskusikan Proyek Serupa</span>
+      </a>
+    </div>
+
+  </article>
+</BaseLayout>
