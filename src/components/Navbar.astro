@@ -12,11 +12,11 @@ const navLinks = [
 ];
 ---
 
-<header class="sticky top-0 z-40 w-full backdrop-blur-md bg-brand-bg/85 border-b border-brand-border/60 transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+<header class="nav-shell sticky top-0 z-40 w-full backdrop-blur-md bg-brand-bg/85 border-b border-brand-border/60">
+  <div class="nav-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
     <!-- Monogram Logo -->
     <a href="/" class="group flex items-center gap-2" aria-label="Beranda Portofolio">
-      <span class="font-serif text-3xl font-medium tracking-tight text-brand-primary group-hover:text-brand-accent transition-colors">
+      <span class="font-serif text-3xl font-medium tracking-tight text-brand-primary group-hover:text-brand-accent transition-all duration-500 group-hover:-rotate-6 group-hover:scale-110 inline-block">
         {siteConfig.personal.shortName.charAt(0)}
       </span>
       <span class="hidden sm:inline-block font-sans text-xs tracking-[0.2em] uppercase text-brand-muted border-l border-brand-border pl-2.5">
@@ -26,10 +26,11 @@ const navLinks = [
 
     <!-- Desktop Navigation -->
     <nav class="hidden md:flex items-center gap-8" aria-label="Navigasi Utama">
-      {navLinks.map((link) => (
+      {navLinks.map((link, i) => (
         <a
           href={link.href}
-          class="font-sans text-xs tracking-[0.18em] font-semibold text-brand-text/80 hover:text-brand-accent transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-brand-accent hover:after:w-full after:transition-all"
+          style={`--d:${300 + i * 70}ms`}
+          class="nav-link hero-in font-sans text-xs tracking-[0.18em] font-semibold text-brand-text/80 hover:text-brand-accent transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-brand-accent hover:after:w-full after:transition-all after:duration-500"
         >
           {link.label}
         </a>
@@ -39,10 +40,11 @@ const navLinks = [
     <!-- Right Accent (Decorative Star & CTA button) -->
     <div class="hidden md:flex items-center gap-4">
       <div class="w-12 h-[1px] bg-brand-border"></div>
-      <Icon name="star" class="w-3.5 h-3.5 text-brand-accent" />
+      <Icon name="star" class="w-3.5 h-3.5 text-brand-accent anim-twinkle" />
       <a
         href="/#kontak"
-        class="inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-brand-primary text-xs font-semibold tracking-wider uppercase text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-all"
+        data-magnetic="0.25"
+        class="btn-shine inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-brand-primary text-xs font-semibold tracking-wider uppercase text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-colors"
       >
         Kolaborasi
       </a>
@@ -66,52 +68,29 @@ const navLinks = [
     </button>
   </div>
 
-  <!-- Mobile Dropdown Navigation -->
-  <div
-    id="mobile-nav"
-    class="hidden md:hidden border-b border-brand-border bg-brand-bg px-4 pt-2 pb-6 space-y-3 shadow-lg"
-  >
-    {navLinks.map((link) => (
-      <a
-        href={link.href}
-        class="mobile-nav-link block px-3 py-2 text-sm tracking-widest font-semibold text-brand-text hover:text-brand-accent hover:bg-brand-surface rounded-md transition-colors"
-      >
-        {link.label}
-      </a>
-    ))}
-    <div class="pt-2 border-t border-brand-border">
-      <a
-        href="/#kontak"
-        class="mobile-nav-link block text-center py-2.5 px-4 rounded-full bg-brand-primary text-brand-bg text-xs font-semibold tracking-wider uppercase hover:bg-brand-primary-dark transition-colors"
-      >
-        Hubungi Saya
-      </a>
+  <!-- Mobile Dropdown Navigation (slide + stagger) -->
+  <div id="mobile-nav" class="mobile-panel md:hidden bg-brand-bg shadow-lg">
+    <div>
+      <div class="px-4 pt-2 pb-6 space-y-3 border-b border-brand-border">
+        {navLinks.map((link, i) => (
+          <a
+            href={link.href}
+            style={`--i:${i}`}
+            class="mobile-nav-link block px-3 py-2 text-sm tracking-widest font-semibold text-brand-text hover:text-brand-accent hover:bg-brand-surface rounded-md"
+          >
+            {link.label}
+          </a>
+        ))}
+        <div class="pt-2 border-t border-brand-border">
+          <a
+            href="/#kontak"
+            style={`--i:${navLinks.length}`}
+            class="mobile-nav-link block text-center py-2.5 px-4 rounded-full bg-brand-primary text-brand-bg text-xs font-semibold tracking-wider uppercase hover:bg-brand-primary-dark"
+          >
+            Hubungi Saya
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </header>
-
-<script>
-  const toggleBtn = document.getElementById('mobile-menu-toggle');
-  const mobileNav = document.getElementById('mobile-nav');
-  const openIcon = document.getElementById('menu-icon-open');
-  const closeIcon = document.getElementById('menu-icon-close');
-  const navLinks = document.querySelectorAll('.mobile-nav-link');
-
-  function toggleMenu() {
-    const isExpanded = toggleBtn?.getAttribute('aria-expanded') === 'true';
-    toggleBtn?.setAttribute('aria-expanded', (!isExpanded).toString());
-    mobileNav?.classList.toggle('hidden');
-    openIcon?.classList.toggle('hidden');
-    closeIcon?.classList.toggle('hidden');
-  }
-
-  toggleBtn?.addEventListener('click', toggleMenu);
-
-  navLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      if (!mobileNav?.classList.contains('hidden')) {
-        toggleMenu();
-      }
-    });
-  });
-</script>

@@ -10,12 +10,12 @@ const { personal } = siteConfig;
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Bagian Atas Footer (Mirip Desain Referensi) -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-brand-border/80 items-center">
+    <div data-stagger="140" class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-brand-border/80 items-center">
       
       <!-- Logo Monogram & Slogan Singkat (md:col-span-5) -->
-      <div class="md:col-span-5 flex items-center gap-4">
+      <div data-reveal="up" class="md:col-span-5 flex items-center gap-4">
         <a href="/" class="group block" aria-label="Kembali ke atas">
-          <span class="font-serif text-5xl font-medium tracking-tight text-brand-primary group-hover:text-brand-accent transition-colors">
+          <span class="font-serif text-5xl font-medium tracking-tight text-brand-primary group-hover:text-brand-accent transition-all duration-500 inline-block group-hover:-translate-y-2 group-hover:rotate-[-8deg]">
             {personal.shortName.charAt(0)}
           </span>
         </a>
@@ -30,7 +30,7 @@ const { personal } = siteConfig;
       </div>
 
       <!-- Info Surel & Lokasi (md:col-span-4) -->
-      <div class="md:col-span-4 space-y-2">
+      <div data-reveal="up" class="md:col-span-4 space-y-2">
         <div class="flex items-center gap-2.5 text-xs text-brand-text/90">
           <Icon name="mail" class="w-4 h-4 text-brand-accent" />
           <a href={`mailto:${personal.email}`} class="hover:text-brand-accent transition-colors">
@@ -44,13 +44,13 @@ const { personal } = siteConfig;
       </div>
 
       <!-- Ikon Sosial Media (md:col-span-3) -->
-      <div class="md:col-span-3 flex md:justify-end items-center gap-3">
+      <div data-reveal="up" class="md:col-span-3 flex md:justify-end items-center gap-3">
         {personal.social.linkedin && (
           <a
             href={personal.social.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 rounded-full border border-brand-border bg-brand-bg/80 flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:border-brand-primary transition-all duration-300 shadow-sm"
+            class="w-10 h-10 rounded-full border border-brand-border bg-brand-bg/80 flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:border-brand-primary hover:-translate-y-1 hover:rotate-6 transition-all duration-300 shadow-sm"
             aria-label="Profil LinkedIn"
           >
             <Icon name="linkedin" class="w-4 h-4" />
@@ -62,7 +62,7 @@ const { personal } = siteConfig;
             href={personal.social.github}
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 rounded-full border border-brand-border bg-brand-bg/80 flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:border-brand-primary transition-all duration-300 shadow-sm"
+            class="w-10 h-10 rounded-full border border-brand-border bg-brand-bg/80 flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:border-brand-primary hover:-translate-y-1 hover:rotate-6 transition-all duration-300 shadow-sm"
             aria-label="Profil GitHub"
           >
             <Icon name="github" class="w-4 h-4" />
@@ -74,7 +74,7 @@ const { personal } = siteConfig;
             href={personal.social.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 rounded-full border border-brand-border bg-brand-bg/80 flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:border-brand-primary transition-all duration-300 shadow-sm"
+            class="w-10 h-10 rounded-full border border-brand-border bg-brand-bg/80 flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:border-brand-primary hover:-translate-y-1 hover:rotate-6 transition-all duration-300 shadow-sm"
             aria-label="Profil Instagram"
           >
             <Icon name="instagram" class="w-4 h-4" />

@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+
+const words = [
+  "Frontend Architecture",
+  "UI/UX Prototyping",
+  "Web Performance",
+  "Applied Machine Learning",
+  "Astro",
+  "TypeScript",
+  "Tailwind",
+  "Python",
+];
+// Digandakan agar loop -50% terlihat mulus tanpa jeda
+const loop = [...words, ...words];
+---
+
+<div class="marquee relative overflow-hidden border-y border-brand-border/70 bg-brand-bg py-4 select-none" aria-hidden="true">
+  <div class="marquee-track">
+    {[0, 1].map(() => (
+      <div class="flex shrink-0 items-center">
+        {loop.map((w) => (
+          <span class="flex items-center gap-6 pr-6 font-serif text-2xl sm:text-3xl italic text-brand-primary/80 whitespace-nowrap">
+            {w}
+            <Icon name="sparkle" class="w-4 h-4 text-brand-accent anim-twinkle" />
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+  <!-- Fade tepi kiri-kanan -->
+  <div class="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-brand-bg to-transparent"></div>
+  <div class="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-brand-bg to-transparent"></div>
+</div>

@@ -25,7 +25,7 @@ const allYears = Array.from(
   <div class="py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Header Halaman -->
-    <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+    <div class="text-center max-w-3xl mx-auto mb-12 space-y-3" data-stagger="120">
       <div class="flex items-center justify-center gap-2">
         <div class="h-[1px] w-8 bg-brand-accent/40"></div>
         <span class="text-xs font-sans tracking-[0.25em] font-semibold uppercase text-brand-accent">
@@ -34,16 +34,16 @@ const allYears = Array.from(
         <div class="h-[1px] w-8 bg-brand-accent/40"></div>
       </div>
 
-      <h1 class="font-serif text-4xl sm:text-6xl font-medium tracking-tight text-brand-primary uppercase">
+      <h1 data-reveal="blur" class="font-serif text-4xl sm:text-6xl font-medium tracking-tight text-brand-primary uppercase">
         Daftar Seluruh Proyek
       </h1>
-      <p class="text-sm sm:text-base text-brand-muted font-sans leading-relaxed">
+      <p data-reveal="up" class="text-sm sm:text-base text-brand-muted font-sans leading-relaxed">
         Kumpulan proyek rekayasa perangkat lunak, aplikasi seluler, dan perancangan antarmuka yang dikembangkan selama masa perkuliahan dan magang.
       </p>
     </div>
 
     <!-- Filter Bar (Teknologi & Tahun) -->
-    <div class="mb-10 p-6 rounded-2xl bg-brand-surface border border-brand-border space-y-4">
+    <div data-reveal="up" class="mb-10 p-6 rounded-2xl bg-brand-surface border border-brand-border space-y-4">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         
         <!-- Filter Kategori / Teknologi -->
@@ -100,10 +100,11 @@ const allYears = Array.from(
     </div>
 
     <!-- Grid Proyek -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+    <div data-stagger="120" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
       {allProjects.map((project) => (
         <div
-          class="project-item transition-all duration-300"
+          data-reveal="up"
+          class="project-item"
           data-tech={project.data.tech.join(',')}
           data-year={String(project.data.year)}
         >
@@ -152,6 +153,7 @@ const allYears = Array.from(
 
   function applyFilters() {
     let visibleCount = 0;
+    const shown: HTMLElement[] = [];
 
     projectItems.forEach((item) => {
       const itemTechs = (item.dataset.tech || '').split(',');
@@ -162,11 +164,14 @@ const allYears = Array.from(
 
       if (matchTech && matchYear) {
         item.style.display = '';
+        shown.push(item);
         visibleCount++;
       } else {
         item.style.display = 'none';
       }
     });
+
+    (window as any).replayFilterAnim?.(shown);
 
     if (noProjectsMsg) {
       if (visibleCount === 0) {

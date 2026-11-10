@@ -14,16 +14,17 @@ const featuredProjects = allProjects
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <!-- Header Section (Sesuai Gaya SELECTED PROJECTS pada Gambar Referensi) -->
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-brand-border">
+    <div class="relative flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4">
+      <div class="absolute bottom-0 inset-x-0 h-px bg-brand-border" data-line></div>
       <div>
-        <span class="text-xs font-sans tracking-[0.2em] uppercase font-semibold text-brand-muted block mb-1">
+        <span data-reveal="down" class="text-xs font-sans tracking-[0.2em] uppercase font-semibold text-brand-muted block mb-1">
           Karya & Eksplorasi
         </span>
         <div class="flex items-center gap-2">
-          <h2 id="projects-heading" class="font-serif text-3xl sm:text-5xl font-medium tracking-tight text-brand-primary uppercase">
+          <h2 id="projects-heading" data-split-line data-reveal-delay="120" class="font-serif text-3xl sm:text-5xl font-medium tracking-tight text-brand-primary uppercase">
             Proyek Unggulan
           </h2>
-          <Icon name="star" class="w-4 h-4 text-brand-accent mb-1" />
+          <Icon name="star" class="w-4 h-4 text-brand-accent mb-1 anim-twinkle" />
         </div>
       </div>
 
@@ -39,9 +40,11 @@ const featuredProjects = allProjects
     </div>
 
     <!-- Grid 3 Kartu Proyek -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div data-stagger="150" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {featuredProjects.map((project) => (
-        <ProjectCard project={project} />
+        <div data-reveal="up">
+          <ProjectCard project={project} />
+        </div>
       ))}
     </div>
 

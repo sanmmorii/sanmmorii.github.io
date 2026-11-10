@@ -12,9 +12,9 @@ const hasTestimonial = testimonial && testimonial.enabled && testimonial.quote &
       
       <!-- Kolom Testimoni (Opsional: Otomatis Sembunyi Jika Data Kosong) -->
       {hasTestimonial && (
-        <div class="lg:col-span-6 space-y-6 lg:border-r lg:border-white/15 lg:pr-12">
+        <div data-reveal="left" class="lg:col-span-6 space-y-6 lg:border-r lg:border-white/15 lg:pr-12">
           <!-- Quote Icon -->
-          <span class="font-serif text-6xl text-brand-accent-light/60 leading-none select-none block -mb-4">
+          <span class="anim-float-slow font-serif text-6xl text-brand-accent-light/60 leading-none select-none block -mb-4 w-fit">
             “
           </span>
 
@@ -33,7 +33,7 @@ const hasTestimonial = testimonial && testimonial.enabled && testimonial.quote &
 
           <!-- Indikator Dots Kecil (Mirip Referensi Gambar) -->
           <div class="flex items-center gap-2 pt-2">
-            <span class="w-2 h-2 rounded-full bg-brand-accent-light"></span>
+            <span class="w-2 h-2 rounded-full bg-brand-accent-light" style="animation: pulseRing 2s ease-out infinite"></span>
             <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
             <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
           </div>
@@ -41,9 +41,9 @@ const hasTestimonial = testimonial && testimonial.enabled && testimonial.quote &
       )}
 
       <!-- Kolom Ajakan Kontak (CTA) -->
-      <div class={`${hasTestimonial ? 'lg:col-span-6' : 'text-center'} space-y-6`}>
+      <div data-reveal={hasTestimonial ? "right" : "up"} class={`${hasTestimonial ? 'lg:col-span-6' : 'text-center'} space-y-6`}>
         <div class={`flex items-center gap-4 ${!hasTestimonial ? 'justify-center' : ''}`}>
-          <div class="w-12 h-12 rounded-full border border-brand-accent-light/40 flex items-center justify-center text-brand-accent-light shadow-inner">
+          <div class="relative w-12 h-12 rounded-full border border-brand-accent-light/40 flex items-center justify-center text-brand-accent-light shadow-inner"><span class="absolute inset-0 rounded-full border border-brand-accent-light/50" style="animation: pulseRing 2.4s ease-out infinite"></span>
             <Icon name="mail" class="w-5 h-5" />
           </div>
           <div>
@@ -63,10 +63,11 @@ const hasTestimonial = testimonial && testimonial.enabled && testimonial.quote &
         <div class={`pt-2 flex flex-wrap items-center gap-4 ${!hasTestimonial ? 'justify-center' : ''}`}>
           <a
             href={`mailto:${email}?subject=${encodeURIComponent(contactCTA.subjectPrefill)}`}
-            class="group inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-brand-bg text-brand-primary text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-brand-surface hover:text-brand-primary-dark transition-all duration-300 shadow-md"
+            data-magnetic="0.25"
+            class="btn-shine group inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-brand-bg text-brand-primary text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-brand-surface hover:text-brand-primary-dark transition-all duration-300 shadow-md"
           >
             <span>{contactCTA.buttonText}</span>
-            <span class="transform group-hover:translate-x-1 transition-transform">
+            <span class="transform group-hover:translate-x-1.5 transition-transform duration-300">
               <Icon name="arrow-right" class="w-4 h-4 text-brand-primary" />
             </span>
           </a>

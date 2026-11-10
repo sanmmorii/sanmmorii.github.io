@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
 import StatsStrip from '../components/StatsStrip.astro';
 import FeaturedProjects from '../components/FeaturedProjects.astro';
 import SkillsAbout from '../components/SkillsAbout.astro';
@@ -17,6 +18,9 @@ import { siteConfig } from '../data/site';
 >
   <!-- 1. Hero Section -->
   <Hero />
+
+  <!-- 1b. Marquee keahlian berjalan -->
+  <Marquee />
 
   <!-- 2. Strip Statistik 4 Kolom (#800020) -->
   <StatsStrip />

@@ -44,11 +44,11 @@ const stats = [
 
 <section class="w-full bg-brand-primary text-brand-bg py-10 md:py-14 border-y border-brand-primary-dark shadow-inner" aria-label="Statistik Pencapaian">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 divide-y md:divide-y-0 md:divide-x divide-white/10">
+    <div data-stagger="130" class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 divide-y md:divide-y-0 md:divide-x divide-white/10">
       {stats.map((stat, idx) => (
-        <div class={`flex flex-col items-center text-center ${idx > 0 ? 'pt-6 md:pt-0' : ''} px-4`}>
+        <div data-reveal="up" class={`group flex flex-col items-center text-center ${idx > 0 ? 'pt-6 md:pt-0' : ''} px-4`}>
           <!-- Ikon Aksen Halus -->
-          <div class="mb-3 p-2 rounded-full bg-white/5 border border-white/10 text-brand-accent-light">
+          <div class="mb-3 p-2 rounded-full bg-white/5 border border-white/10 text-brand-accent-light transition-all duration-500 group-hover:bg-white/15 group-hover:-translate-y-1 group-hover:rotate-12 group-hover:scale-110">
             <Icon name={stat.icon} class="w-5 h-5 text-brand-accent-light" />
           </div>
 

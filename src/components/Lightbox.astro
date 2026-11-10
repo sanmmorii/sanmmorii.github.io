@@ -108,6 +108,9 @@ import Icon from './Icon.astro';
     if (imgEl) {
       imgEl.src = item.src;
       imgEl.alt = item.title;
+      imgEl.classList.remove('lb-anim');
+      void imgEl.offsetWidth;
+      imgEl.classList.add('lb-anim');
     }
     if (titleEl) titleEl.textContent = item.title;
     if (dateEl) dateEl.textContent = item.date;

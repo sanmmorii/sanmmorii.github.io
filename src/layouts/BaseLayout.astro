@@ -48,6 +48,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://portofol
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <!-- Aktifkan mode animasi; bila skrip gagal memuat dalam 4 detik, konten tetap ditampilkan -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!document.documentElement.classList.contains('motion-ready')) {
+          document.documentElement.classList.remove('js');
+        }
+      }, 4000);
+    </script>
+
     <!-- Google Fonts (Cormorant Garamond, Plus Jakarta Sans, Caveat) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -57,6 +67,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://portofol
     />
   </head>
   <body class="bg-brand-bg text-brand-text min-h-screen flex flex-col antialiased selection:bg-brand-accent-light selection:text-brand-primary">
+    <!-- Indikator progres scroll -->
+    <div id="scroll-progress" aria-hidden="true"></div>
+
     <!-- Skip to Content for Accessibility -->
     <a
       href="#main-content"
@@ -78,5 +91,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://portofol
 
     <!-- Lightbox Modal Global -->
     <Lightbox />
+
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

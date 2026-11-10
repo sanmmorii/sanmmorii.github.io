@@ -10,14 +10,14 @@ const { personal } = siteConfig;
     <div class="max-w-4xl mx-auto">
       
       <!-- Header Section -->
-      <div class="text-center space-y-3 mb-12">
-        <span class="text-xs font-sans tracking-[0.25em] font-semibold uppercase text-brand-accent">
+      <div class="text-center space-y-3 mb-12" data-stagger="130">
+        <span data-reveal="down" class="text-xs font-sans tracking-[0.25em] font-semibold uppercase text-brand-accent block">
           Mari Terhubung
         </span>
-        <h2 id="contact-heading" class="font-serif text-3xl sm:text-5xl font-medium tracking-tight text-brand-primary uppercase">
+        <h2 id="contact-heading" data-reveal="blur" class="font-serif text-3xl sm:text-5xl font-medium tracking-tight text-brand-primary uppercase">
           Hubungi Saya
         </h2>
-        <p class="text-sm sm:text-base text-brand-muted max-w-lg mx-auto font-sans leading-relaxed">
+        <p data-reveal="up" class="text-sm sm:text-base text-brand-muted max-w-lg mx-auto font-sans leading-relaxed">
           Punya ide proyek menarik, tawaran magang, atau ingin berdiskusi seputar teknologi? Jangan ragu untuk mengirimkan pesan.
         </p>
       </div>
@@ -25,7 +25,7 @@ const { personal } = siteConfig;
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
         
         <!-- Kolom Info Kontak (Kiri) -->
-        <div class="md:col-span-5 space-y-6 bg-brand-surface rounded-2xl p-6 sm:p-8 border border-brand-border">
+        <div data-reveal="left" class="md:col-span-5 space-y-6 bg-brand-surface rounded-2xl p-6 sm:p-8 border border-brand-border">
           <h3 class="font-serif text-2xl font-medium text-brand-primary">
             Informasi Kontak
           </h3>
@@ -36,7 +36,7 @@ const { personal } = siteConfig;
           <div class="space-y-4 pt-2">
             <!-- Email -->
             <div class="flex items-start gap-3">
-              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border">
+              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border transition-all duration-500 hover:bg-brand-primary hover:text-brand-bg hover:rotate-12 hover:scale-110">
                 <Icon name="mail" class="w-4 h-4" />
               </div>
               <div>
@@ -54,7 +54,7 @@ const { personal } = siteConfig;
 
             <!-- Lokasi -->
             <div class="flex items-start gap-3">
-              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border">
+              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border transition-all duration-500 hover:bg-brand-primary hover:text-brand-bg hover:rotate-12 hover:scale-110">
                 <Icon name="map-pin" class="w-4 h-4" />
               </div>
               <div>
@@ -69,7 +69,7 @@ const { personal } = siteConfig;
 
             <!-- Kampus -->
             <div class="flex items-start gap-3">
-              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border">
+              <div class="p-2.5 rounded-full bg-brand-bg text-brand-primary border border-brand-border transition-all duration-500 hover:bg-brand-primary hover:text-brand-bg hover:rotate-12 hover:scale-110">
                 <Icon name="academic-cap" class="w-4 h-4" />
               </div>
               <div>
@@ -101,7 +101,7 @@ const { personal } = siteConfig;
                   href={personal.social.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-all"
+                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:-translate-y-1 hover:rotate-6 hover:shadow-lg transition-all duration-300"
                   aria-label="GitHub"
                   title="GitHub"
                 >
@@ -113,7 +113,7 @@ const { personal } = siteConfig;
                   href={personal.social.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-all"
+                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:-translate-y-1 hover:rotate-6 hover:shadow-lg transition-all duration-300"
                   aria-label="LinkedIn"
                   title="LinkedIn"
                 >
@@ -125,7 +125,7 @@ const { personal } = siteConfig;
                   href={personal.social.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg transition-all"
+                  class="w-9 h-9 rounded-full border border-brand-border bg-brand-bg flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-brand-bg hover:-translate-y-1 hover:rotate-6 hover:shadow-lg transition-all duration-300"
                   aria-label="Instagram"
                   title="Instagram"
                 >
@@ -137,9 +137,9 @@ const { personal } = siteConfig;
         </div>
 
         <!-- Kolom Formulir Pesan (Kanan) -->
-        <div class="md:col-span-7 bg-brand-surface rounded-2xl p-6 sm:p-8 border border-brand-border">
-          <form id="contact-form" class="space-y-4">
-            <div>
+        <div data-reveal="right" data-reveal-delay="150" class="md:col-span-7 bg-brand-surface rounded-2xl p-6 sm:p-8 border border-brand-border">
+          <form id="contact-form" class="space-y-4" data-stagger="90" data-recipient={personal.shortName}>
+            <div data-reveal="up" class="field-wrap">
               <label for="name" class="block text-xs font-sans font-semibold tracking-wider uppercase text-brand-primary mb-1.5">
                 Nama Lengkap Anda
               </label>
@@ -153,7 +153,7 @@ const { personal } = siteConfig;
               />
             </div>
 
-            <div>
+            <div data-reveal="up" class="field-wrap">
               <label for="email" class="block text-xs font-sans font-semibold tracking-wider uppercase text-brand-primary mb-1.5">
                 Alamat Email Anda
               </label>
@@ -167,7 +167,7 @@ const { personal } = siteConfig;
               />
             </div>
 
-            <div>
+            <div data-reveal="up" class="field-wrap">
               <label for="subject" class="block text-xs font-sans font-semibold tracking-wider uppercase text-brand-primary mb-1.5">
                 Subjek Pesan
               </label>
@@ -181,7 +181,7 @@ const { personal } = siteConfig;
               />
             </div>
 
-            <div>
+            <div data-reveal="up" class="field-wrap">
               <label for="message" class="block text-xs font-sans font-semibold tracking-wider uppercase text-brand-primary mb-1.5">
                 Isi Pesan
               </label>
@@ -196,11 +196,13 @@ const { personal } = siteConfig;
             </div>
 
             <button
+              data-reveal="up"
               type="submit"
-              class="w-full py-3.5 px-6 rounded-xl bg-brand-primary text-brand-bg text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-brand-primary-dark transition-all duration-300 shadow-md flex items-center justify-center gap-2"
+              data-magnetic="0.08"
+              class="btn-shine group w-full py-3.5 px-6 rounded-xl bg-brand-primary text-brand-bg text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-brand-primary-dark transition-all duration-300 shadow-md flex items-center justify-center gap-2"
             >
               <span>Kirim Pesan Sekarang</span>
-              <Icon name="arrow-right" class="w-4 h-4" />
+              <Icon name="arrow-right" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
             </button>
           </form>
 
@@ -213,9 +215,9 @@ const { personal } = siteConfig;
   </div>
 </section>
 
-<script define:vars={{ recipientName: personal.shortName }}>
+<script>
   // Fitur salin email ke clipboard
-  const copyBtn = document.getElementById('copy-email-btn');
+  const copyBtn = document.getElementById('copy-email-btn') as HTMLButtonElement | null;
   const copyText = document.getElementById('copy-text');
 
   copyBtn?.addEventListener('click', async () => {
@@ -223,6 +225,7 @@ const { personal } = siteConfig;
     try {
       await navigator.clipboard.writeText(email);
       if (copyText) copyText.textContent = 'Berhasil Disalin!';
+      copyBtn.classList.remove('copied-pop'); void copyBtn.offsetWidth; copyBtn.classList.add('copied-pop');
       setTimeout(() => {
         if (copyText) copyText.textContent = 'Salin Alamat Email';
       }, 2500);
@@ -232,11 +235,13 @@ const { personal } = siteConfig;
   });
 
   // Handler formulir pengiriman
-  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const recipientName = form?.dataset.recipient || '';
   const feedback = document.getElementById('form-feedback');
 
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
+    if (!form) return;
     const formData = new FormData(form);
     const name = formData.get('name');
     const email = formData.get('email');
